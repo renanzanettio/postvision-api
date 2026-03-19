@@ -6,18 +6,32 @@ const secret = process.env.JWT_SECRET;
 
 const createUser = async (req, res) => {
     try {
+        const { firstName, lastName, email, password, birthDate, cpf, gender, phone } = req.body;
+        
         // Passamos o body inteiro para o service processar
-        const novoUsuario = await userService.createUser(req.body);
+        const user = await userService.createUser(
+            firstName, 
+            lastName,
+            email,
+            password,
+            birthDate,
+            cpf,
+            gender,
+            phone
+        );
 
         // Resposta de sucesso (seguindo o padrão do seu route antigo)
         res.status(201).json({
             message: 'Usuário criado com sucesso!',
             usuario: {
-                id_usuario: novoUsuario._id,
-                nome_usuario: novoUsuario.firstName,
-                sobrenome_usuario: novoUsuario.lastName,
-                email_usuario: novoUsuario.email,
-                data_nascimento_usuario: novoUsuario.birthDate,
+                id_usuario: user._id,
+                nome_usuario: user.firstName,
+                sobrenome_usuario: user.lastName,
+                email_usuario: user.email,
+                data_nascimento_usuario: user.birthDate,
+                cpf_usuario: user.cpf,
+                genero_usuario: user.gender,
+                telefone_usuario: user.phone,
             }
         });
     } catch (err) {
@@ -89,4 +103,29 @@ const loginUser = async (req, res) => {
     }
 }
 
-export default { createUser, loginUser, getOne };
+
+const updateUser = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { firstName, lastName, email, password, birthDate, cpf, gender, phone } = req.body;
+        await userService.Update(id, firstName, lastName, email, password, birthDate, cpf, gender, phone);
+        res.status(200).json({ message: 'Usuário atualizado com sucesso!' });
+
+    } catch (err) {
+        console.log('Erro ao atualizar usuário: ', err);
+        res.status(500).json({ error: 'Erro interno no servidor' });
+    }
+}
+
+const deleteUser = async (req, res) => {
+    try {
+        const { id } = req.params;
+        await userService.Delete(id);
+        res.status(200).json({ message: 'Usuário deletado com sucesso!' });
+    } catch (err) {
+        console.log('Erro ao deletar usuário: ', err);
+        res.status(500).json({ error: 'Erro interno no servidor' });
+    }
+}
+
+export default { createUser, loginUser, getOne, updateUser, deleteUser };

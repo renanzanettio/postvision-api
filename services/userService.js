@@ -2,9 +2,7 @@ import User from '../models/Users.js';
 import bcrypt from 'bcryptjs';
 
 class UserService {
-    async createUser(userData) {
-        const { firstName, lastName, email, password, birthDate, cpf, gender, phone } = userData;
-
+    async createUser(firstName, lastName, email, password, birthDate, cpf, gender, phone) {
         // 1. Verificações de existência
         const emailExists = await User.findOne({ email });
         if (emailExists) {
@@ -52,6 +50,36 @@ class UserService {
             throw new Error('Erro ao buscar usuário');
         }
     }
+    
+    async Update(id, firstName, lastName, email, password, birthDate, cpf, gender, phone) {
+        try {
+            await User.findByIdAndUpdate(id, {
+                firstName,
+                lastName,
+                email,
+                password,
+                birthDate,
+                cpf,
+                gender,
+                phone
+            });
+            console.log(`Usuário ${id} atualizado com sucesso!`);
+        } catch (err) {
+            console.log('Erro ao atualizar usuário: ', err);
+            throw new Error('Erro ao atualizar usuário');
+        }
+    }
+
+    async Delete(id) {
+        try {
+            await User.findByIdAndDelete(id);
+            console.log(`Usuário ${id} deletado com sucesso!`);
+        } catch (err) {
+            console.log('Erro ao deletar usuário: ', err);
+            throw new Error('Erro ao deletar usuário');
+        }
+    }
+    
 }
 
 export default new UserService();
