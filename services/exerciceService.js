@@ -16,7 +16,7 @@ class ExerciceService {
         }
     }
 
-    async getAll() {
+    async GetAll() {
         try {
             const exercicies = await Exercice.find();
             return exercicies;
@@ -26,13 +26,28 @@ class ExerciceService {
         }
     }
 
-    async delete(id) {
+    async Delete(id) {
         try {
             await Exercice.findByIdAndDelete(id);
             console.log(`Exercício ${id} deletado com sucesso!`);
         } catch (err) {
             console.log('Erro ao deletar exercício: ', err);
             throw new Error('Erro ao deletar exercício');
+        }
+    }
+
+    async Update(id, name, description, videoUrl, muscleGroup) {
+        try {
+            await Exercice.findByIdAndUpdate(id, {
+                name,
+                description,
+                videoUrl,
+                muscleGroup
+            });
+            console.log(`Exercício ${id} atualizado com sucesso!`);
+        } catch (err) {
+            console.log('Erro ao atualizar exercício: ', err);
+            throw new Error('Erro ao atualizar exercício');
         }
     }
 

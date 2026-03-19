@@ -6,6 +6,8 @@ exerciceRouter.post('/exercice', exerciceController.createExercice);
 
 exerciceRouter.get('/exercice', exerciceController.getAllExercices);
 
+exerciceRouter.put('/exercice/:id', exerciceController.updateExercice);
+
 exerciceRouter.delete('/exercice/:id', exerciceController.deleteExercice);
 
 export default exerciceRouter;
