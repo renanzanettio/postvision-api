@@ -42,6 +42,16 @@ class UserService {
 
         return await newUser.save();
     }
+
+    async getOne(email) {
+        try {
+            const user = await User.findOne({ email : email});
+            return user;
+        } catch (err) {
+            console.log('Erro ao buscar usuário: ', err);
+            throw new Error('Erro ao buscar usuário');
+        }
+    }
 }
 
 export default new UserService();
