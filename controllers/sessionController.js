@@ -31,4 +31,32 @@ const GetSessionsByUserId = async (req, res) => {
     }
 }
 
-export default { CreateSession, GetSessionsByUserId };
+import {
+    calculateStreak,
+    getWeeklyData,
+    getMonthlyData
+} from '../utils/statsUtils.js';
+
+const GetStats = async (req, res) => {
+    try {
+        const userId = req.params.userId;
+
+        const sessions = await SessionService.GetAllByUserId(userId);
+
+        const streak = calculateStreak(sessions);
+        const weekly = getWeeklyData(sessions);
+        const monthly = getMonthlyData(sessions);
+
+        res.status(200).json({
+            streak,
+            weekly,
+            monthly
+        });
+
+    } catch (err) {
+        console.log('Erro ao gerar stats: ', err);
+        res.status(500).json({ error: 'Erro interno no servidor' });
+    }
+};
+
+export default { CreateSession, GetSessionsByUserId, GetStats };
