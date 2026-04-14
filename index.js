@@ -6,6 +6,7 @@ import cors from 'cors';
 import userRouter from './routes/userRoutes.js';
 import exerciceRouter from './routes/exerciceRoutes.js';
 import sessionRouter from './routes/sessionRoutes.js';
+import notificationRouter from './routes/notificationRoutes.js';
 
 dotenv.config();
 
@@ -22,6 +23,7 @@ app.use(express.json());
 app.use('/', userRouter);
 app.use('/', exerciceRouter);
 app.use('/', sessionRouter);
+app.use('/', notificationRouter);
 
 mongoose.connect(process.env.MONGODB_URI)
     .then(() => console.log('Banco conectado com sucesso'))
